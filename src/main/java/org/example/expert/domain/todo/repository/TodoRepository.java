@@ -8,9 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 
-public interface TodoRepository extends JpaRepository<Todo, Long> {
+public interface TodoRepository extends JpaRepository<Todo, Long>, TodoCustomRepository {
 
     //조건 없을 때
     @Query("SELECT t FROM Todo t LEFT JOIN FETCH t.user u ORDER BY t.modifiedAt DESC")
@@ -40,9 +39,4 @@ public interface TodoRepository extends JpaRepository<Todo, Long> {
     @Query("select t from Todo t left join fetch t.user u where t.modifiedAt <= :end order by t.modifiedAt desc")
     Page<Todo> findAllByWithEndDesc(Pageable pageable, @Param("end") LocalDateTime end);
 
-
-    @Query("SELECT t FROM Todo t " +
-            "LEFT JOIN t.user " +
-            "WHERE t.id = :todoId")
-    Optional<Todo> findByIdWithUser(@Param("todoId") Long todoId);
 }
