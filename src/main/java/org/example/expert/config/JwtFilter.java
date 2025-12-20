@@ -46,7 +46,7 @@ public class JwtFilter extends OncePerRequestFilter {
         request.setAttribute("userId", userId);
         request.setAttribute("email", email);
         request.setAttribute("nickname", nickname);
-        request.setAttribute("userRole", userRole);
+        request.setAttribute("userRole", userRole.name());
 
         AuthUser authUser = new AuthUser(userId, email, nickname, userRole);
 
