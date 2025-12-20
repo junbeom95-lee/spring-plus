@@ -2,11 +2,12 @@ package org.example.expert.domain.todo.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.example.expert.domain.common.annotation.Auth;
 import org.example.expert.domain.common.dto.AuthUser;
 import org.example.expert.domain.todo.dto.request.TodoGetPageRequest;
+import org.example.expert.domain.todo.dto.request.TodoPageRequest;
 import org.example.expert.domain.todo.dto.request.TodoSaveRequest;
+import org.example.expert.domain.todo.dto.response.TodoPageResponse;
 import org.example.expert.domain.todo.dto.response.TodoResponse;
 import org.example.expert.domain.todo.dto.response.TodoSaveResponse;
 import org.example.expert.domain.todo.service.TodoService;
@@ -14,7 +15,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@Slf4j
 @RestController
 @RequiredArgsConstructor
 public class TodoController {
@@ -33,13 +33,18 @@ public class TodoController {
                                                        @RequestParam(defaultValue = "10") int size,
                                                        TodoGetPageRequest request) {
 
-        log.info("w : {}, s : {}, e : {}", request.getWeather(), request.getStartDate(), request.getEndDate());
-
         return ResponseEntity.ok(todoService.getTodos(page, size, request));
     }
 
     @GetMapping("/todos/{todoId}")
     public ResponseEntity<TodoResponse> getTodo(@PathVariable long todoId) {
         return ResponseEntity.ok(todoService.getTodo(todoId));
+    }
+
+    @GetMapping("/todos/d")
+    public ResponseEntity<Page<TodoPageResponse>> getTodoPage(TodoPageRequest request) {
+
+        return ResponseEntity.ok(todoService.getTodoPage(request));
+
     }
 }
