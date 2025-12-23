@@ -32,7 +32,7 @@ public class HealthController {
                     .append(", remote : ").append(ipAddressRemote)
                     .append(", hostname : ").append(hostname);
 
-            log.info("[Health Check] ip : {}, remote : {}, hostname : {} check ", ipAddress, ipAddressRemote, hostname);
+            log.info(sb.toString());
 
         } catch (UnknownHostException e) {
 
