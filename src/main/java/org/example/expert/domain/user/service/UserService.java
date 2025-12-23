@@ -1,6 +1,7 @@
 package org.example.expert.domain.user.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.example.expert.config.PasswordEncoder;
 import org.example.expert.domain.common.exception.InvalidRequestException;
 import org.example.expert.domain.user.dto.request.UserChangePasswordRequest;
@@ -10,6 +11,9 @@ import org.example.expert.domain.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -47,5 +51,16 @@ public class UserService {
                 !userChangePasswordRequest.getNewPassword().matches(".*[A-Z].*")) {
             throw new InvalidRequestException("새 비밀번호는 8자 이상이어야 하고, 숫자와 대문자를 포함해야 합니다.");
         }
+    }
+
+    public List<UserResponse> getUserByUsername(String nickname) {
+
+        long startTime = System.currentTimeMillis();
+        List<User> userList = userRepository.findAllByNickname(nickname);
+        long endTime = System.currentTimeMillis();
+
+        log.info("[UserService] :: getUserByUsername 총 걸린 시간 : {}(ms)", endTime - startTime);
+
+        return userList.stream().map(u -> new UserResponse(u.getId(), u.getEmail())).toList();
     }
 }
