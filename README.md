@@ -1,6 +1,10 @@
 # SPRING PLUS
 
 ---
+# 서비스 아키텍처
+<img width="1007" height="554" alt="image" src="https://github.com/user-attachments/assets/0bc3ae42-5d59-4dc2-9d81-1ac7721ff862" />
+
+---
 # AWS 활용
 
 ## EC2
