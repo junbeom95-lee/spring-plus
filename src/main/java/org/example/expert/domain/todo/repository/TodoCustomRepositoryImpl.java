@@ -19,6 +19,7 @@ import java.util.Optional;
 import static org.example.expert.domain.comment.entity.QComment.comment;
 import static org.example.expert.domain.manager.entity.QManager.manager;
 import static org.example.expert.domain.todo.entity.QTodo.todo;
+import static org.example.expert.domain.user.entity.QUser.user;
 
 @RequiredArgsConstructor
 public class TodoCustomRepositoryImpl implements TodoCustomRepository {
@@ -55,6 +56,7 @@ public class TodoCustomRepositoryImpl implements TodoCustomRepository {
                 )
                 .from(todo)
                 .leftJoin(todo.managers, manager)
+                .leftJoin(manager.user, user)
                 .leftJoin(todo.comments, comment)
                 .where(
                         titleCont(request.getTitle()),
@@ -62,6 +64,7 @@ public class TodoCustomRepositoryImpl implements TodoCustomRepository {
                         nicknameCont(request.getNickname())
                 )
                 .groupBy(todo.id)
+                .orderBy(todo.createdAt.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
@@ -69,8 +72,6 @@ public class TodoCustomRepositoryImpl implements TodoCustomRepository {
         Long listCount = queryFactory
                 .select(todo.count())
                 .from(todo)
-                .leftJoin(todo.managers, manager)
-                .leftJoin(todo.comments, comment)
                 .where(
                         titleCont(request.getTitle()),
                         dateEq(start, end),
@@ -99,6 +100,6 @@ public class TodoCustomRepositoryImpl implements TodoCustomRepository {
 
     //담당자 닉네임 부분 확인
     private BooleanExpression nicknameCont(String nickname) {
-        return nickname == null ? null : manager.user.nickname.contains(nickname);
+        return nickname == null ? null : user.nickname.contains(nickname);
     }
 }
