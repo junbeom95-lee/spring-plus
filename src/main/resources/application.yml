@@ -13,6 +13,9 @@ spring:
       hibernate:
         format_sql: false
     show-sql: true
+  cache:
+    caffeine:
+      spec: maximumSize=100,expireAfterWrite=30s
 ---
 jwt:
   secret:

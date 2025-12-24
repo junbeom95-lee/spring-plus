@@ -8,6 +8,7 @@ import org.example.expert.domain.user.dto.request.UserChangePasswordRequest;
 import org.example.expert.domain.user.dto.response.UserResponse;
 import org.example.expert.domain.user.entity.User;
 import org.example.expert.domain.user.repository.UserRepository;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -53,14 +54,15 @@ public class UserService {
         }
     }
 
+    @Cacheable(value = "userCache", key = "#nickname")
     public List<UserResponse> getUserByUsername(String nickname) {
 
         long startTime = System.currentTimeMillis();
-        List<User> userList = userRepository.findAllByNickname(nickname);
+        List<UserResponse> userList = userRepository.findAllByNickname(nickname);
         long endTime = System.currentTimeMillis();
 
         log.info("[UserService] :: getUserByUsername 총 걸린 시간 : {}(ms)", endTime - startTime);
 
-        return userList.stream().map(u -> new UserResponse(u.getId(), u.getEmail())).toList();
+        return userList;
     }
 }

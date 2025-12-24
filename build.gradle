@@ -53,6 +53,12 @@ dependencies {
 
     //aws
     implementation 'software.amazon.awssdk:s3:2.40.13'
+
+    // 스프링에서 캐시 사용할 것임
+    implementation 'org.springframework.boot:spring-boot-starter-cache'
+
+    // 캐시는 로컬 캐시 : caffeine을 사용할 것임
+    implementation 'com.github.ben-manes.caffeine:caffeine'
 }
 
 tasks.named('test') {
