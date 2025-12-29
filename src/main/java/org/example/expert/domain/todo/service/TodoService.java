@@ -72,6 +72,8 @@ public class TodoService {
             todos = todoRepository.findAllByWithWeatherStartDesc(pageable, request.getWeather(), start);
         } else if (existWeather && existEnd) {          //날씨, 끝
             todos = todoRepository.findAllByWithWeatherEndDesc(pageable, request.getWeather(), end);
+        } else if (existWeather) {                      //날씨
+            todos = todoRepository.findAllByWithWeatherDesc(pageable, request.getWeather());
         } else if (existStart && existEnd) {            //시작, 끝
             todos = todoRepository.findAllByWithStartEndDesc(pageable, start, end);
         } else if (existStart) {                        //시작

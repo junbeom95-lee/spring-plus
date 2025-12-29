@@ -27,6 +27,10 @@ public interface TodoRepository extends JpaRepository<Todo, Long>, TodoCustomRep
     @Query("select t from Todo t left join fetch t.user u where t.weather like %:weather% and t.modifiedAt <= :end order by t.modifiedAt desc")
     Page<Todo> findAllByWithWeatherEndDesc(Pageable pageable, @Param("weather") String weather, @Param("end") LocalDateTime end);
 
+    //날씨
+    @Query("select t from Todo  t left join fetch t.user u where t.weather like %:weather% order by t.modifiedAt desc")
+    Page<Todo> findAllByWithWeatherDesc(Pageable pageable, @Param("weather") String weather);
+
     //시작, 끝
     @Query("select t from Todo t left join fetch t.user u where t.modifiedAt between :start and :end order by t.modifiedAt desc")
     Page<Todo> findAllByWithStartEndDesc(Pageable pageable, @Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
