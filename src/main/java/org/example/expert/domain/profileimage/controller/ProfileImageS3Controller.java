@@ -1,11 +1,11 @@
 package org.example.expert.domain.profileimage.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.example.expert.domain.common.annotation.Auth;
 import org.example.expert.domain.common.dto.AuthUser;
 import org.example.expert.domain.profileimage.dto.request.ProfileImageRequest;
 import org.example.expert.domain.profileimage.service.ProfileImageS3Service;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,7 +25,7 @@ public class ProfileImageS3Controller {
 
     //프로필 이미지 URL 리스트 얻기
     @GetMapping()
-    public ResponseEntity<List<String>> createPresignedGetListUrl(@Auth AuthUser authUser) {
+    public ResponseEntity<List<String>> createPresignedGetListUrl(@AuthenticationPrincipal AuthUser authUser) {
 
         return ResponseEntity.ok(profileImageS3Service.createPresignedGetListUrl(authUser.getId()));
     }
@@ -33,7 +33,7 @@ public class ProfileImageS3Controller {
 
     //프로필 이미지 업로드 URL 얻기
     @PutMapping()
-    public ResponseEntity<String> createPresignedUrl(@Auth AuthUser authUser,
+    public ResponseEntity<String> createPresignedUrl(@AuthenticationPrincipal AuthUser authUser,
                                                      @RequestBody ProfileImageRequest request) {
 
         return ResponseEntity.ok(profileImageS3Service.createPresignedUrl(authUser.getId(), request.getFilename()));
@@ -42,7 +42,7 @@ public class ProfileImageS3Controller {
 
     //프로필 이미지 삭제
     @DeleteMapping()
-    public ResponseEntity<Void> deleteObject(@Auth AuthUser authUser,
+    public ResponseEntity<Void> deleteObject(@AuthenticationPrincipal AuthUser authUser,
                                                @RequestBody ProfileImageRequest request) {
 
         profileImageS3Service.deleteObject(authUser.getId(), request.getFilename());

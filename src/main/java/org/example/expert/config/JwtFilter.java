@@ -43,11 +43,6 @@ public class JwtFilter extends OncePerRequestFilter {
         String nickname = (String) claims.get("nickname");
         UserRole userRole = UserRole.valueOf(claims.get("userRole", String.class));
 
-        request.setAttribute("userId", userId);
-        request.setAttribute("email", email);
-        request.setAttribute("nickname", nickname);
-        request.setAttribute("userRole", userRole.name());
-
         AuthUser authUser = new AuthUser(userId, email, nickname, userRole);
 
         List<SimpleGrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_" + userRole.name()));
